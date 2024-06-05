@@ -5,11 +5,13 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.maverickstube.maverickshub.models.Category;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @Setter
 @Getter
+@ToString
 public class MediaResponse {
     private Long id;
     private String url;
