@@ -1,5 +1,6 @@
 package com.maverickstube.maverickshub.services;
 
+import com.github.fge.jsonpatch.JsonPatch;
 import com.maverickstube.maverickshub.dtos.requests.UpdateMediaRequest;
 import com.maverickstube.maverickshub.dtos.requests.UploadMediaRequest;
 import com.maverickstube.maverickshub.dtos.response.UpdateMediaResponse;
@@ -10,5 +11,5 @@ public interface MediaService {
     UploadMediaResponse upload(UploadMediaRequest request);
     Media getMediaById(long l);
 
-    UpdateMediaResponse updateMedia(Long mediaId, UpdateMediaRequest request);
+    UpdateMediaResponse updateMedia(Long mediaId, JsonPatch updateMediaRequest);
 }

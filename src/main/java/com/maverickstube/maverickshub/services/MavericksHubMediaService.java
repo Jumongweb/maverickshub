@@ -3,6 +3,10 @@ package com.maverickstube.maverickshub.services;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.Uploader;
 import com.cloudinary.utils.ObjectUtils;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import com.maverickstube.maverickshub.dtos.requests.UpdateMediaRequest;
 import com.maverickstube.maverickshub.dtos.requests.UploadMediaRequest;
 import com.maverickstube.maverickshub.dtos.response.UpdateMediaResponse;
@@ -54,12 +58,21 @@ public class MavericksHubMediaService implements MediaService{
     }
 
     @Override
-    public UpdateMediaResponse updateMedia(Long mediaId, UpdateMediaRequest request){
-        Media media = getMediaById(request.getMediaId());
-        media = modelMapper.map(request, Media.class);
-        Media savedMedia = mediaRepository.save(media);
+    public UpdateMediaResponse updateMedia(Long mediaId,
+                                           JsonPatch jsonPatch){
+        try {
+            Media media = getMediaById(mediaId);
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode mediaNode = objectMapper.convertValue(media, JsonNode.class);
 
-        return  modelMapper.map(media, UpdateMediaResponse.class);
+            mediaNode = jsonPatch.apply(mediaNode);
+            media = objectMapper.convertValue(mediaNode, Media.class);
+            mediaRepository.save(media);
+            return modelMapper.map(media, UpdateMediaResponse.class);
+        } catch (JsonPatchException exception){
+            throw new MediaUpdateFailedException("update failed ");
+        }
+
     }
 
 

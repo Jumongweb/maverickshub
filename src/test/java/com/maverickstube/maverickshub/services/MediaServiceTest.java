@@ -1,9 +1,16 @@
 package com.maverickstube.maverickshub.services;
 
+import com.fasterxml.jackson.databind.node.TextNode;
+import com.github.fge.jackson.jsonpointer.JsonPointer;
+import com.github.fge.jackson.jsonpointer.JsonPointerException;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchOperation;
+import com.github.fge.jsonpatch.ReplaceOperation;
 import com.maverickstube.maverickshub.dtos.requests.UpdateMediaRequest;
 import com.maverickstube.maverickshub.dtos.requests.UploadMediaRequest;
 import com.maverickstube.maverickshub.dtos.response.UpdateMediaResponse;
 import com.maverickstube.maverickshub.dtos.response.UploadMediaResponse;
+import com.maverickstube.maverickshub.models.Category;
 import com.maverickstube.maverickshub.models.Media;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -19,10 +26,12 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import static com.maverickstube.maverickshub.models.Category.ACTION;
 import static com.maverickstube.maverickshub.models.Category.STEP_MOM;
 import static com.maverickstube.maverickshub.utils.TestUtils.TEST_VIDEO_LOCATION;
+import static com.maverickstube.maverickshub.utils.TestUtils.buildUploadMediaRequest;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
@@ -56,38 +65,23 @@ public class MediaServiceTest {
         assertThat(media.getId()).isNotNull();
     }
 
-    private static UploadMediaRequest buildUploadMediaRequest(InputStream inputStream) throws IOException {
-        UploadMediaRequest request = new UploadMediaRequest();
-        MultipartFile file = new MockMultipartFile("media", inputStream);
-        request.setMediaFile(file);
-        request.setUserId(200L);
-        request.setCategory(ACTION);
-        return request;
-    }
 
-//    @Test
-//    @DisplayName("test that media can be update")
-//    public void testUpdateMedia(){
-//        Media media = mediaService.getMediaById(100L);
-//        assertThat(media.getCategory()).isEqualTo(ACTION);
-//        UpdateMediaRequest updateMediaRequest = new UpdateMediaRequest();
-//        updateMediaRequest.setCategory(STEP_MOM);
-//        updateMediaRequest.setMediaId(100L);
-//
-//        var response = mediaService.updateMedia(updateMediaRequest);
-//        assertThat(response).isNotNull();
-//        media = mediaService.getMediaById(100L);
-//        assertThat(media.getCategory()).isEqualTo(STEP_MOM);
-//    }
 
     @Test
     @DisplayName("test update media files")
-    public void testUpdateUser(){
-        UpdateMediaRequest request = new UpdateMediaRequest();
-        request.setCategory(STEP_MOM);
-        request.setDescription("test description");
-        UpdateMediaResponse response = new UpdateMediaResponse();
-        mediaService.updateMedia(103L, request);
+    public void testUpdateUser() throws JsonPointerException {
+        Category category = mediaService.getMediaById(103L).getCategory();
+        assertThat(category).isNotEqualTo(STEP_MOM);
+
+        List<JsonPatchOperation> operations = List.of(
+                new ReplaceOperation(new JsonPointer("/category"),
+                        new TextNode(STEP_MOM.name()))
+        );
+        JsonPatch updateMediaRequest = new JsonPatch(operations);
+        UpdateMediaResponse response = mediaService.updateMedia(103L, updateMediaRequest);
+        assertThat(response).isNotNull();
+        category = mediaService.getMediaById(103L).getCategory();
+        assertThat(category).isEqualTo(STEP_MOM);
 
     }
 
