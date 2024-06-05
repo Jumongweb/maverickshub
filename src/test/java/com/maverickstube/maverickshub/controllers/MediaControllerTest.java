@@ -1,7 +1,5 @@
 package com.maverickstube.maverickshub.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.maverickstube.maverickshub.dtos.requests.UploadMediaRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -13,16 +11,12 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static com.maverickstube.maverickshub.utils.TestUtils.TEST_VIDEO_LOCATION;
-import static com.maverickstube.maverickshub.utils.TestUtils.buildUploadMediaRequest;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

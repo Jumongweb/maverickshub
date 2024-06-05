@@ -6,8 +6,8 @@ import com.github.fge.jackson.jsonpointer.JsonPointerException;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchOperation;
 import com.github.fge.jsonpatch.ReplaceOperation;
-import com.maverickstube.maverickshub.dtos.requests.UpdateMediaRequest;
 import com.maverickstube.maverickshub.dtos.requests.UploadMediaRequest;
+import com.maverickstube.maverickshub.dtos.response.MediaResponse;
 import com.maverickstube.maverickshub.dtos.response.UpdateMediaResponse;
 import com.maverickstube.maverickshub.dtos.response.UploadMediaResponse;
 import com.maverickstube.maverickshub.models.Category;
@@ -17,22 +17,18 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static com.maverickstube.maverickshub.models.Category.ACTION;
 import static com.maverickstube.maverickshub.models.Category.STEP_MOM;
 import static com.maverickstube.maverickshub.utils.TestUtils.TEST_VIDEO_LOCATION;
 import static com.maverickstube.maverickshub.utils.TestUtils.buildUploadMediaRequest;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Slf4j
@@ -83,6 +79,13 @@ public class MediaServiceTest {
         category = mediaService.getMediaById(103L).getCategory();
         assertThat(category).isEqualTo(STEP_MOM);
 
+    }
+
+    @Test
+    public void getMediaForUserTest(){
+        Long userId = 200L;
+        List<MediaResponse> media = mediaService.getMediaFor(userId);
+        assertThat(media).hasSize(3);
     }
 
 }

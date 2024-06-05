@@ -2,15 +2,12 @@ package com.maverickstube.maverickshub.services;
 
 import com.maverickstube.maverickshub.dtos.requests.CreateUserRequest;
 import com.maverickstube.maverickshub.dtos.response.CreateUserResponse;
+import com.maverickstube.maverickshub.exceptions.UserNotFoundException;
 import com.maverickstube.maverickshub.models.User;
 import com.maverickstube.maverickshub.repositories.UserRepository;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.nio.file.attribute.UserPrincipalNotFoundException;
 
 @Service
 public class MavericksHubUserService implements UserService{

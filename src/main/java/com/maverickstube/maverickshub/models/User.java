@@ -23,8 +23,6 @@ public class User {
     private String password;
     private LocalDateTime timeCreated;
     private LocalDateTime timeUpdated;
-    @OneToMany
-    private List<Media> media;
 
     @PrePersist
     private void setTimeCreated(){

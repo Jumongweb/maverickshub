@@ -7,11 +7,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
-import com.maverickstube.maverickshub.dtos.requests.UpdateMediaRequest;
 import com.maverickstube.maverickshub.dtos.requests.UploadMediaRequest;
+import com.maverickstube.maverickshub.dtos.response.MediaResponse;
 import com.maverickstube.maverickshub.dtos.response.UpdateMediaResponse;
 import com.maverickstube.maverickshub.dtos.response.UploadMediaResponse;
 import com.maverickstube.maverickshub.exceptions.MediaNotFoundException;
+import com.maverickstube.maverickshub.exceptions.MediaUpdateFailedException;
 import com.maverickstube.maverickshub.exceptions.MediaUploadFailedException;
 import com.maverickstube.maverickshub.models.Media;
 import com.maverickstube.maverickshub.models.User;
@@ -22,6 +23,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -73,6 +75,14 @@ public class MavericksHubMediaService implements MediaService{
             throw new MediaUpdateFailedException("update failed ");
         }
 
+    }
+
+    @Override
+    public List<MediaResponse> getMediaFor(Long userId) {
+        List<Media> media = mediaRepository.findAllMediaFor(userId);
+        return media.stream()
+                .map(m->modelMapper.map(m, MediaResponse.class))
+                .toList();
     }
 
 

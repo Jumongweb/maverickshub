@@ -1,4 +1,4 @@
-package com.maverickstube.maverickshub.services;
+package com.maverickstube.maverickshub.exceptions;
 
 import com.github.fge.jsonpatch.JsonPatchException;
 
