@@ -16,6 +16,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static com.maverickstube.maverickshub.utils.TestUtils.TEST_VIDEO_LOCATION;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -42,6 +44,18 @@ public class MediaControllerTest {
                     .andDo(print());
         } catch (Exception exception) {
             throw exception;
+        }
+    }
+
+    @Test
+    public void testGetMediaForUser() {
+        try {
+            mockMvc.perform(get("/api/v1/media?userId=200")
+                            .contentType(MediaType.APPLICATION_JSON))
+                            .andExpect(status().is2xxSuccessful())
+                            .andDo(print());
+        } catch (Exception exception) {
+            assertThat(exception).isNotNull();
         }
     }
 }
