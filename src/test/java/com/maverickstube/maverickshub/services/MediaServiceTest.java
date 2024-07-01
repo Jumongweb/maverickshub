@@ -62,7 +62,6 @@ public class MediaServiceTest {
     }
 
 
-
     @Test
     @DisplayName("test update media files")
     public void testUpdateUser() throws JsonPointerException {

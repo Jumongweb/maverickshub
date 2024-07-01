@@ -2,6 +2,7 @@ package com.maverickstube.maverickshub.dtos.response;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.maverickstube.maverickshub.models.Category;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,9 +18,9 @@ public class MediaResponse {
     private String url;
     private String description;
     private Category category;
-    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime timeCreated;
-    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime timeUpdated;
     private UserResponse uploader;
 }

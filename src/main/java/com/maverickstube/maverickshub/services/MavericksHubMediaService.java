@@ -74,7 +74,6 @@ public class MavericksHubMediaService implements MediaService{
         } catch (JsonPatchException exception){
             throw new MediaUpdateFailedException("update failed ");
         }
-
     }
 
     @Override

@@ -15,7 +15,6 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RestController
 @RequestMapping("/api/v1/media")
 @AllArgsConstructor
-
 public class MediaController {
 
     private final MediaService mediaService;
@@ -25,9 +24,9 @@ public class MediaController {
                 .body(mediaService.upload(uploadMediaRequest));
     }
 
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<?> getMediaForUser(@RequestParam Long userId){
-        return ResponseEntity.ok(mediaService.getMediaById(userId));
+        return ResponseEntity.ok(mediaService.getMediaFor(userId));
 
     }
 }
